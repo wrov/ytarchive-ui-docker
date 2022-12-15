@@ -1,4 +1,5 @@
 import os
+import glob
 import falcon
 import json
 import sys
@@ -255,7 +256,16 @@ class Callback:
         add_task(uid, t)
 
         resp.status = falcon.HTTP_200
-    
+
+class Download:
+    def on_get(self, req, resp):
+        uid = req.get_param('id')
+        for file in glob.glob('*' + uid + '*'):
+            resp.content_type = 'application/octet-stream'
+            resp.downloadable_as = file
+            resp.text = file
+            return
+        
 api = falcon.API()
 api.add_route('/status', Status())
 api.add_route('/record', Record())
@@ -263,4 +273,5 @@ api.add_route('/cookie', CookieAvailable())
 api.add_route('/callbacks', Callbacks())
 api.add_route('/callback', Callback())
 api.add_route('/reboot', Reboot())
+api.add_route('/download', Download())
 api.add_route('/', Website())
