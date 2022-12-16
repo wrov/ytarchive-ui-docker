@@ -263,7 +263,8 @@ class Download:
         for file in glob.glob('*' + uid + '*'):
             resp.content_type = 'application/octet-stream'
             resp.downloadable_as = file
-            resp.text = file
+            resp.stream = open(file, 'rb')
+            resp.status = falcon.HTTP_200
             return
         
 api = falcon.API()
