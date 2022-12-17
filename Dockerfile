@@ -7,5 +7,4 @@ RUN pip3 install -r requirements.txt
 RUN apt-get update && apt-get -y install ffmpeg && rm -rf /var/lib/apt/lists/*
 COPY . .
 EXPOSE 8080
-CMD [ "/bin/chmod -x run.sh", "./run.sh" ]
 CMD chmod -x run.sh;./run.sh
